@@ -14,6 +14,13 @@ public class LoanService {
     private final LoanRepository repository;
 
     public Loan createLoan(Loan loan){
+        // Comprobar si el libro tiene algun prestamo activo antes de prestarse
+        List<Loan> lista = repository.findByBookAndReturned(loan.getBook(), false);
+
+        if (!lista.isEmpty()){
+            throw new IllegalStateException("Book is already loaned");
+        }
+
         return repository.save(loan);
     }
 
@@ -28,5 +35,7 @@ public class LoanService {
     public void deleteLoan(Long id){
         repository.deleteById(id);
     }
+
+
 
 }
