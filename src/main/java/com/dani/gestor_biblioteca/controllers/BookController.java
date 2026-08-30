@@ -1,5 +1,6 @@
 package com.dani.gestor_biblioteca.controllers;
 
+import com.dani.gestor_biblioteca.dto.BookResponseDTO;
 import com.dani.gestor_biblioteca.models.Book;
 import com.dani.gestor_biblioteca.services.BookService;
 import lombok.RequiredArgsConstructor;
@@ -17,8 +18,8 @@ public class BookController {
     private final BookService service;
 
     @PostMapping
-    public ResponseEntity<Book> createBook(@RequestBody Book book){
-        Book created = service.createBook(book);
+    public ResponseEntity<BookResponseDTO> createBook(@RequestBody Book book){
+        BookResponseDTO created = service.createBook(book);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
