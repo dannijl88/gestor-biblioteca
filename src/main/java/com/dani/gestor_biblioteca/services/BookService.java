@@ -25,12 +25,12 @@ public class BookService {
         return BookMapper.toDTO(book);
     }
 
-    public List<Book> findAllBooks(){
-        return repository.findAll();
+    public List<BookResponseDTO> findAllBooks(){
+        return repository.findAll().stream().map(BookMapper::toDTO).toList();
     }
 
-    public Book findBookById(Long id){
-        return repository.findById(id).orElseThrow();
+    public BookResponseDTO findBookById(Long id){
+        return repository.findById(id).map(BookMapper::toDTO).orElseThrow();
     }
 
     public void deleteBook(Long id){
