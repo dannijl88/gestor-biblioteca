@@ -3,6 +3,7 @@ package com.dani.gestor_biblioteca.controllers;
 import com.dani.gestor_biblioteca.dto.BookResponseDTO;
 import com.dani.gestor_biblioteca.models.Book;
 import com.dani.gestor_biblioteca.services.BookService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ public class BookController {
     private final BookService service;
 
     @PostMapping
-    public ResponseEntity<BookResponseDTO> createBook(@RequestBody Book book){
+    public ResponseEntity<BookResponseDTO> createBook(@Valid @RequestBody Book book){
         BookResponseDTO created = service.createBook(book);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }

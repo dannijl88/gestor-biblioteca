@@ -3,6 +3,7 @@ package com.dani.gestor_biblioteca.controllers;
 import com.dani.gestor_biblioteca.dto.LoanResponseDTO;
 import com.dani.gestor_biblioteca.models.Loan;
 import com.dani.gestor_biblioteca.services.LoanService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ public class LoanController {
     private final LoanService service;
 
     @PostMapping
-    public ResponseEntity<LoanResponseDTO> createLoan(@RequestBody Loan loan){
+    public ResponseEntity<LoanResponseDTO> createLoan(@Valid @RequestBody Loan loan){
         LoanResponseDTO created = service.createLoan(loan);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }

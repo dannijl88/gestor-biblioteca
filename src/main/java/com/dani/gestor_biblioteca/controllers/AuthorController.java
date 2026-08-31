@@ -3,6 +3,7 @@ package com.dani.gestor_biblioteca.controllers;
 import com.dani.gestor_biblioteca.dto.AuthorResponseDTO;
 import com.dani.gestor_biblioteca.models.Author;
 import com.dani.gestor_biblioteca.services.AuthorService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ public class AuthorController {
     private final AuthorService service;
 
     @PostMapping
-    public ResponseEntity<AuthorResponseDTO> createAuthor(@RequestBody Author author){
+    public ResponseEntity<AuthorResponseDTO> createAuthor(@Valid @RequestBody Author author){
         AuthorResponseDTO created = service.createAuthor(author);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
