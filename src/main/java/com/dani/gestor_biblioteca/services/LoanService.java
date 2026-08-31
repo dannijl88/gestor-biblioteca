@@ -1,6 +1,10 @@
 package com.dani.gestor_biblioteca.services;
 
+import com.dani.gestor_biblioteca.dto.LoanResponseDTO;
+import com.dani.gestor_biblioteca.mappers.LoanMapper;
+import com.dani.gestor_biblioteca.models.Book;
 import com.dani.gestor_biblioteca.models.Loan;
+import com.dani.gestor_biblioteca.repositories.BookRepository;
 import com.dani.gestor_biblioteca.repositories.LoanRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,8 +16,9 @@ import java.util.List;
 public class LoanService {
 
     private final LoanRepository repository;
+    private final BookRepository bookRepository;
 
-    public Loan createLoan(Loan loan){
+    public LoanResponseDTO createLoan(Loan loan){
         // Comprobar si el libro tiene algun prestamo activo antes de prestarse
         List<Loan> lista = repository.findByBookAndReturned(loan.getBook(), false);
 
@@ -21,15 +26,19 @@ public class LoanService {
             throw new IllegalStateException("Book is already loaned");
         }
 
-        return repository.save(loan);
+        Book completeBook = bookRepository.findById(loan.getBook().getId()).orElseThrow();
+        loan.setBook(completeBook);
+
+        repository.save(loan);
+        return LoanMapper.toDTO(loan);
     }
 
-    public List<Loan> getAllLoans(){
-        return repository.findAll();
+    public List<LoanResponseDTO> getAllLoans(){
+        return repository.findAll().stream().map(LoanMapper::toDTO).toList();
     }
 
-    public Loan getLoanById(Long id){
-        return repository.findById(id).orElseThrow();
+    public LoanResponseDTO getLoanById(Long id){
+        return repository.findById(id).map(LoanMapper::toDTO).orElseThrow();
     }
 
     public void deleteLoan(Long id){
